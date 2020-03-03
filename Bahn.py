@@ -2,7 +2,11 @@ import json
 import requests
 
 def station_search():
-    search = raw_input("Suche : ")
+    search = ""
+    try:
+        search = raw_input("Suche : ") #Fehler Bei Windows
+    except Exception:
+        search = input("Suche : ")
     search = str(search)
     #url = "https://marudor.de/api/hafas/v1/station/" + search
     url = "https://marudor.de/api/station/v1/search/" + search
@@ -30,8 +34,11 @@ def selectStation(data):
     for st in stations:
         print(str(i) + ") " + st)
         i = i + 1
-
-    auswahl = int(raw_input("Station Waehlen : "))
+    auswahl = 1
+    try:
+        auswahl = int(raw_input("Station Waehlen : "))
+    except Exception:
+        auswahl = int(input("Station Waehlen : "))
     auswahl = auswahl - 1
     print(stations[auswahl])
     return auswahl
@@ -45,9 +52,9 @@ def abfahrten(eva):
     fahrten = data["departures"]
     for x in fahrten:
         try:
-            print(x["arrival"])
+            print(x["arrival"]["delay"])
         except Exception:
-            print(x)
+            print("Zug startet")
 
 data = station_search()
 auswahl = selectStation(data)
