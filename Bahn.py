@@ -40,21 +40,24 @@ def selectStation(data):
     except Exception:
         auswahl = int(input("Station Waehlen : "))
     auswahl = auswahl - 1
-    print(stations[auswahl])
     return auswahl
 
 def abfahrten(eva):
+    print("Abfahrten")
     url = "https://marudor.de/api/iris/v1/abfahrten/" + eva
-    print(eva)
     param = dict()
     resp = requests.get(url = url, params=param)
     data = resp.json()
     fahrten = data["departures"]
     for x in fahrten:
         try:
-            print(x["arrival"]["delay"])
-        except Exception:
-            print("Zug startet")
+            zug = x["train"]["name"]
+            if(x["arrival"]["cancelled"] == False):
+                print(zug + "\t nach : " + x["destination"] + "\t Ankunft Plan : " + str(x["initialDeparture"]) + "\t Ankunft Real : " + str(x["arrival"]["scheduledTime"]))
+            else:
+                print(zug + " Faellt aus !")
+        except Exception as e:
+            pass
 
 data = station_search()
 auswahl = selectStation(data)
