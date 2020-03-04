@@ -46,7 +46,7 @@ def selectStation(data):
     return auswahl
 
 def printAnkunft(datas):
-    fahrten = data["departures"]
+    fahrten = datas["departures"]
     for x in fahrten:
         try:
             zug = x["train"]["name"]
@@ -80,3 +80,6 @@ printAnkunft(zugdaten)
 
 workdata = train.Zug(zugdaten)
 workdata.test()
+z = workdata.getAnkunft()
+for t in z:
+        print(t)
