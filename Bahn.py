@@ -14,7 +14,7 @@ def station_search():
     search = str(search)
     #url = "https://marudor.de/api/hafas/v1/station/" + search
     url = "https://marudor.de/api/station/v1/search/" + search
-    #print(url)
+    print(url)
     param = dict()
     resp = requests.get(url = url, params=param)
     data = resp.json()
@@ -75,7 +75,7 @@ def timestamp_to_time(timestamp):
 
 while True:
     print("Auswahl : ")
-    print("Ankünfte [1] | Abfahrten [2] | Verspaetung [3]")
+    print("Ankuenfte [1] | Abfahrten [2] | Verspaetung [3]")
     print("Beenden [99]")
 
     choice = 1
@@ -86,9 +86,9 @@ while True:
 
     if(choice <= 3):
         data = station_search()                         #Inhalt alle Stationen der Suchanfrage (Station[], EvaID[])
-        auswahl = int(selectStation(data))              #Integer für Stationsauswahl
-        zugdaten = bahnhofsdaten(data[1][auswahl])      #Liefert alle Bahnhofsdaten für die gewählte Station JSON --> Alles
-        workdata = train.Zug(zugdaten)                  #Schreibt daten in Ein Objekt für leichteres Arbeiten
+        auswahl = int(selectStation(data))              #Integer fuer Stationsauswahl
+        zugdaten = bahnhofsdaten(data[1][auswahl])      #Liefert alle Bahnhofsdaten fuer die gewaehlte Station JSON  Alles
+        workdata = train.Zug(zugdaten)                  #Schreibt daten in Ein Objekt fuer leichteres Arbeiten
 
         if(choice == 1):
             printAnkunft(zugdaten)
@@ -97,7 +97,7 @@ while True:
         elif(choice == 3):
             print("Noch nicht Implementiert")
         else:
-            print("Fehler ungültige Aktion")
+            print("Fehler ungueltige Aktion")
             sys.exit()
     elif(choice == 99):
         print("Beende")
