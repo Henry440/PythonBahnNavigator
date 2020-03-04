@@ -1,5 +1,6 @@
 import json
 import requests
+import sys
 from datetime import datetime
 
 import ZugDaten as train
@@ -7,9 +8,9 @@ import ZugDaten as train
 def station_search():
     search = ""
     try:
-        search = raw_input("Suche : ") #Fehler Bei Windows
+        search = raw_input("Stationssuche : ") #Fehler Bei Windows
     except Exception:
-        search = input("Suche : ")
+        search = input("Stationssuche : ")
     search = str(search)
     #url = "https://marudor.de/api/hafas/v1/station/" + search
     url = "https://marudor.de/api/station/v1/search/" + search
@@ -57,7 +58,7 @@ def printAnkunft(datas):
         except Exception as Zugdatene:
             pass
 
-def abfahrten(eva):
+def bahnhofsdaten(eva):
     print("Abfahrten")
     url = "https://marudor.de/api/iris/v1/abfahrten/" + eva
     print(url)
@@ -72,14 +73,35 @@ def timestamp_to_time(timestamp):
     timestring = dt_object.strftime("%X")
     return timestring
 
+while True:
+    print("Auswahl : ")
+    print("Ankünfte [1] | Abfahrten [2] | Verspaetung [3]")
+    print("Beenden [99]")
 
-data = station_search()
-auswahl = int(selectStation(data))
-zugdaten = abfahrten(data[1][auswahl])
-printAnkunft(zugdaten)
+    choice = 1
+    try:
+        choice = int(raw_input("Auswahl : "))
+    except Exception:
+        choice = int(input("Auswahl : "))
 
-workdata = train.Zug(zugdaten)
-workdata.test()
-z = workdata.getAnkunft()
-for t in z:
-        print(t)
+    if(choice <= 3):
+        data = station_search()                         #Inhalt alle Stationen der Suchanfrage (Station[], EvaID[])
+        auswahl = int(selectStation(data))              #Integer für Stationsauswahl
+        zugdaten = bahnhofsdaten(data[1][auswahl])      #Liefert alle Bahnhofsdaten für die gewählte Station JSON --> Alles
+        workdata = train.Zug(zugdaten)                  #Schreibt daten in Ein Objekt für leichteres Arbeiten
+
+        if(choice == 1):
+            printAnkunft(zugdaten)
+        elif(choice == 2):
+            print("Noch nicht Implementiert")
+        elif(choice == 3):
+            print("Noch nicht Implementiert")
+        else:
+            print("Fehler ungültige Aktion")
+            sys.exit()
+    elif(choice == 99):
+        print("Beende")
+        sys.exit()
+    else:
+        print("Fehlerhafte eingabe !")
+        continue

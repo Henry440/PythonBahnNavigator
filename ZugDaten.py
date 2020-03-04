@@ -13,7 +13,7 @@ class Zug:
 			return False
 		else:
 			#return self.data["departures"]["arrival"]
-			ret = [""]
+			ret = []
 			da = self.data["departures"]
 			for x in da:
 				try:
@@ -26,5 +26,10 @@ class Zug:
 		if(self.ende == True):
 			return False
 
+	def getData(self):
+		return self.data
+
 	def printData(self):
-		print(self.data)
+		da = self.data
+		for i in da:
+			print(i)
