@@ -46,13 +46,26 @@ def selectStation(data):
     auswahl = auswahl - 1
     return auswahl
 
+    #departure
+def printAbfahrt(datas):
+    fahrten = datas["departures"]
+    for x in fahrten:
+        try:
+            zug = x["train"]["name"]
+            if(x["departure"]["cancelled"] == False):
+                print(zug + "\t nach : " + x["destination"] + "\t Abfahrt : " + timestamp_to_time(x["departure"]["time"]))
+            else:
+                print(zug + " Faellt aus !")
+        except Exception as Zugdatene:
+            pass
+
 def printAnkunft(datas):
     fahrten = datas["departures"]
     for x in fahrten:
         try:
             zug = x["train"]["name"]
             if(x["arrival"]["cancelled"] == False):
-                print(zug + "\t nach : " + x["destination"] + "\t Ankunft Plan : " + timestamp_to_time(x["arrival"]["scheduledTime"]) + "\t Ankunft Real : " + timestamp_to_time(x["arrival"]["time"]))
+                print(zug + "\t nach : " + x["destination"] + "\t Ankunft : " + timestamp_to_time(x["arrival"]["time"]))
             else:
                 print(zug + " Faellt aus !")
         except Exception as Zugdatene:
@@ -93,7 +106,7 @@ while True:
         if(choice == 1):
             printAnkunft(zugdaten)
         elif(choice == 2):
-            print("Noch nicht Implementiert")
+            printAbfahrt(zugdaten)
         elif(choice == 3):
             print("Noch nicht Implementiert")
         else:
