@@ -1,5 +1,8 @@
 import json
 import requests
+from datetime import datetime
+
+import ZugDaten as train
 
 def station_search():
     search = ""
@@ -10,7 +13,7 @@ def station_search():
     search = str(search)
     #url = "https://marudor.de/api/hafas/v1/station/" + search
     url = "https://marudor.de/api/station/v1/search/" + search
-
+    #print(url)
     param = dict()
     resp = requests.get(url = url, params=param)
     data = resp.json()
@@ -42,24 +45,38 @@ def selectStation(data):
     auswahl = auswahl - 1
     return auswahl
 
-def abfahrten(eva):
-    print("Abfahrten")
-    url = "https://marudor.de/api/iris/v1/abfahrten/" + eva
-    param = dict()
-    resp = requests.get(url = url, params=param)
-    data = resp.json()
+def printAnkunft(datas):
     fahrten = data["departures"]
     for x in fahrten:
         try:
             zug = x["train"]["name"]
             if(x["arrival"]["cancelled"] == False):
-                print(zug + "\t nach : " + x["destination"] + "\t Ankunft Plan : " + str(x["initialDeparture"]) + "\t Ankunft Real : " + str(x["arrival"]["scheduledTime"]))
+                print(zug + "\t nach : " + x["destination"] + "\t Ankunft Plan : " + timestamp_to_time(x["arrival"]["scheduledTime"]) + "\t Ankunft Real : " + timestamp_to_time(x["arrival"]["time"]))
             else:
                 print(zug + " Faellt aus !")
-        except Exception as e:
+        except Exception as Zugdatene:
             pass
 
+def abfahrten(eva):
+    print("Abfahrten")
+    url = "https://marudor.de/api/iris/v1/abfahrten/" + eva
+    print(url)
+    param = dict()
+    resp = requests.get(url = url, params=param)
+    data = resp.json()
+    return data
+
+def timestamp_to_time(timestamp):
+    time = int(timestamp / 1000)
+    dt_object = datetime.fromtimestamp(time)
+    timestring = dt_object.strftime("%X")
+    return timestring
+
+
 data = station_search()
-auswahl = selectStation(data)
-auswahl = int(auswahl)
-abfahrten(data[1][auswahl])
+auswahl = int(selectStation(data))
+zugdaten = abfahrten(data[1][auswahl])
+printAnkunft(zugdaten)
+
+workdata = train.Zug(zugdaten)
+workdata.test()
