@@ -121,7 +121,7 @@ while True:
         elif(choice == 2):
             printAbfahrt(zugdaten)
         elif(choice == 3):
-            print("Noch nicht Implementiert")
+            printDelay(zugdaten)
         else:
             print("Fehler ungueltige Aktion")
             sys.exit()
