@@ -71,6 +71,19 @@ def printAnkunft(datas):
         except Exception as Zugdatene:
             pass
 
+def printDelay(datas):
+    fahrten = datas["departures"]
+    for x in fahrten:
+        try:
+            zug = x["train"]["name"]
+            if(x["arrival"]["cancelled"] == False):
+                print(zug + "\t nach : " + x["destination"] + "\t Ankunft verspaetung : " + x["arrival"]["delay"] + "Abfahrt Verspaetung : " + x["departure"]["delay"] )
+            else:
+                print(zug + " Faellt aus !")
+        except Exception as Zugdatene:
+            pass
+
+
 def bahnhofsdaten(eva):
     print("Abfahrten")
     url = "https://marudor.de/api/iris/v1/abfahrten/" + eva
