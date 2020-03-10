@@ -77,10 +77,10 @@ def printDelay(datas):
         try:
             zug = x["train"]["name"]
             if(x["arrival"]["cancelled"] == False):
-                print(zug + "\t nach : " + x["destination"] + "\t Ankunft verspaetung : " + x["arrival"]["delay"] + "Abfahrt Verspaetung : " + x["departure"]["delay"] )
+                print(zug + "\t nach : " + x["destination"] + "\t Ankunft Verspaetung : " + str(x["arrival"]["delay"]) + "\tAbfahrt Verspaetung : " + str(x["departure"]["delay"]) )
             else:
                 print(zug + " Faellt aus !")
-        except Exception as Zugdatene:
+        except Exception as e:
             pass
 
 
